@@ -66,13 +66,11 @@ function App() {
 
       if (response.ok) {
         if (method === 'POST') {
-          // Después de crear, actualizar grafo completo
           const graphResponse = await fetch('http://localhost:3000/grafo');
           const graphData = await graphResponse.json();
           const { nodes, edges } = mapToElements(graphData);
           setElements([...nodes, ...edges]);
         } else {
-          // Para GET, mapear el resultado si es array de records
           if (Array.isArray(result)) {
             const { nodes, edges } = mapToElements(result);
             setElements([...nodes, ...edges]);
