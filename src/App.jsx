@@ -5,37 +5,54 @@ import GraphViewer from './components/GraphViewer'
 
 function App() {
   const [elements, setElements] = useState([]);
+  
+  const getProp = (node) => {
+    const type = node.labels[0] || 'Node';
+    let name;
+    switch (type) {
+      case 'Oferta':
+        name = node.properties.titulo
+        break;
+      default:
+        name = node.properties.nombre || JSON.stringify(node.properties)
+    }
 
+    return {type, name}
+  }
   const mapToElements = (data) => {
     const nodes = new Map();
     const edges = [];
 
     data.forEach((item, index) => {
       if (item.origen) {
-        const origenId = `${item.origen.nombre || 'node' + index}`;
+        const origenId = `${item.origen.properties.nombre || 'node' + index}`;
+        const {type, name} = getProp(item.origen)
         if (!nodes.has(origenId)) {
           nodes.set(origenId, {
             data: {
               id: origenId,
-              label: `${Object.keys(item.origen)[0] || 'Node'}: ${item.origen.nombre || JSON.stringify(item.origen)}`
+              label: `${type || 'Node'}:\n ${name}`,
+              type: type
             }
           });
         }
       }
 
       if (item.destino) {
-        const destinoId = `${item.destino.nombre || 'node' + (index + 1)}`;
+        const destinoId = `${item.destino.properties.nombre || 'node' + (index + 1)}`;
+        const {type, name} = getProp(item.destino)
         if (!nodes.has(destinoId)) {
           nodes.set(destinoId, {
             data: {
               id: destinoId,
-              label: `${Object.keys(item.destino)[0] || 'Node'}: ${item.destino.nombre || JSON.stringify(item.destino)}`
+              label: `${type || 'Node'}:\n ${name}`,
+              type: type
             }
           });
         }
 
         if (item.origen && item.relacion) {
-          const origenId = `${item.origen.nombre || 'node' + index}`;
+          const origenId = `${item.origen.properties.nombre || 'node' + index}`;
           edges.push({
             data: {
               source: origenId,

@@ -178,7 +178,7 @@ app.post("/usuarios/conexion", async (req, res) => {
             MATCH (u1:Usuario {nombre: $usuario1})
             MATCH (u2:Usuario {nombre: $usuario2})
 
-            MERGE (u1)-[:CONECTA_CON]->(u2)
+            MERGE (u1)-[:CONECTA_CON]-(u2)
             `,
             { usuario1, usuario2 }
         );
@@ -375,14 +375,17 @@ app.get("/ruta/:usuario/:empresa", async (req, res) => {
 
         const result = await session.run(
             `
-            MATCH (u:Usuario {nombre: $usuario}),
-                  (e:Empresa {nombre: $empresa})
+            MATCH (u:Usuario {nombre: $usuario})
+            MATCH (e:Empresa {nombre: $empresa})
 
-            MATCH p = shortestPath((u)-[*]-(e))
+            MATCH p = shortestPath((u)-[*..10]-(e))
 
             RETURN p
             `,
-            { usuario, empresa }
+            { usuario, empresa },
+            {
+                timeout: 5000
+            }
         );
 
         res.json(result.records);
@@ -419,9 +422,19 @@ app.get("/grafo", async (req, res) => {
         );
 
         const datos = result.records.map(record => ({
-            origen: record.get("n") ? record.get("n").properties : null,
+
+            origen: record.get("n") ? {
+                labels: record.get("n").labels,
+                properties: record.get("n").properties
+            } : null,
+
             relacion: record.get("r") ? record.get("r").type : null,
-            destino: record.get("m") ? record.get("m").properties : null
+
+            destino: record.get("m") ? {
+                labels: record.get("m").labels,
+                properties: record.get("m").properties
+            } : null
+
         }));
 
         res.json(datos);
