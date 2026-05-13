@@ -657,12 +657,10 @@ app.get("/ruta/:nodo1/:nodo2", async (req, res) => {
     try {
 
         const { nodo1, nodo2 } = req.params;
-
-        // Separar label y valor
+        
         const [label1, value1] = nodo1.split(":");
         const [label2, value2] = nodo2.split(":");
-
-        // Oferta usa titulo, el resto usa nombre
+        
         const prop1 = label1 === "Oferta" ? "titulo" : "nombre";
         const prop2 = label2 === "Oferta" ? "titulo" : "nombre";
 
