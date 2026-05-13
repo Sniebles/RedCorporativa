@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
 
 const layout = {
@@ -15,27 +15,6 @@ const GraphViewer = ({ elements }) => {
     const cyRef = useRef(null);
 
     const [edgeLabels, setEdgeLabels] = useState([]);
-
-    useEffect(() => {
-
-        if (cyRef.current && elements.length > 0) {
-
-            const cy = cyRef.current;
-
-            setTimeout(() => {
-
-                cy.resize();
-
-                cy.layout(layout).run();
-
-                cy.fit();
-
-                updateEdgeLabels();
-
-            }, 0);
-        }
-
-    }, [elements]);
 
     const updateEdgeLabels = () => {
 
@@ -96,6 +75,27 @@ const GraphViewer = ({ elements }) => {
 
     useEffect(() => {
 
+        if (cyRef.current && elements.length > 0) {
+
+            const cy = cyRef.current;
+
+            setTimeout(() => {
+
+                cy.resize();
+
+                cy.layout(layout).run();
+
+                cy.fit();
+
+                updateEdgeLabels();
+
+            }, 0);
+        }
+
+    }, [elements]);
+
+    useEffect(() => {
+
         const cy = cyRef.current;
 
         if (!cy) return;
@@ -121,6 +121,7 @@ const GraphViewer = ({ elements }) => {
         >
             <CytoscapeComponent
                 className='graph'
+                wheelSensitivity={5}
                 style={{
                     width: '100%',
                     height: '100%'
@@ -149,6 +150,9 @@ const GraphViewer = ({ elements }) => {
                         style: {
                             width: 2,
                             lineColor: '#666',
+                            label: 'data(label)',
+                            textOpacity: 0,
+                            edgeTextRotation: 'autorotate',
                             targetArrowColor: '#666',
                             targetArrowShape: 'triangle',
                             curveStyle: 'bezier'

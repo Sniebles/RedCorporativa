@@ -1,16 +1,24 @@
-# React + Vite
+Intalasion correcta:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Paso 1: intalar Node.js
+Paso 2: instalar neo4j desktop
+Paso 3: ejecutar en el ComandPrompt lo siguiente:
 
-Currently, two official plugins are available:
+npm install
+npm install neo4j-driver
+npm install cytoscape react-cytoscapejs
+npm install react-router-dom
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Paso 4:
+--para correr el proyecto:
+-abrir neo4j desktop -> crear una instancia y colocar de contraseña 123456789
+-iniciar la instancia con el boton de play
+-crear 2 terminales en la carpeta del proyecto y ejecutar:
 
-## React Compiler
+-en la terminal 1:
+    npm run dev
+-en la terminal 2:
+    node server.js
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+al ejecutar npm run dev le arrojara un link: http://localhost:5173
+ese es el link en donde esta el proyecto
